@@ -30,28 +30,96 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <xacro:arg name="kinect_enabled" default="false" />
 
   <xacro:include filename="$(find husky_description)/urdf/husky.urdf.xacro" />
-  <xacro:husky_robot />
+  <xacro:include filename="$(find realsense2_description)/urdf/1_d435.urdf.xacro" />
+  <xacro:include filename="$(find realsense2_description)/urdf/2_d435.urdf.xacro" />
+  <xacro:include filename="$(find realsense2_description)/urdf/3_d435.urdf.xacro" />
 
-  <!-- Insert customization below, sample provided: -->
+  <!-- <xacro:husky_robot /> -->
 
-  <link name="bowler_link">
+  <!-- Insert customization below, sample provided: 
+
+  <link name="front_camera_mount_link">
     <visual>
       <geometry>
-        <mesh filename="package://husky_custom_description/meshes/red_bowler.dae" />
+        <mesh filename="package://husky_custom_description/meshes/Front_Camera_Assembly.stl" />
       </geometry>
     </visual>
     <collision>
-      <origin xyz="0 0 0.07" rpy="0 0 0" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <box size="0.32 0.25 0.14" rpy="0 0 0"/>
+        <box size="0.127 0.1016 0.0508" rpy="0 0 0"/>
       </geometry>
     </collision>
   </link>
 
-  <joint name="bowler_joint" type="fixed">
-    <parent link="top_plate_link" />
-    <child link="bowler_link" />
-    <origin xyz="0.1 -0.1 0" rpy="0 0 0.5" />
+    <joint name="front_camera_mount_joint" type="fixed">
+    <parent link="top_plate_front_link" />
+    <child link="front_camera_mount_link" />
+    <origin xyz="-0.033 -0.063075 -0.00675" rpy="-1.5708 0 1.5708" />
   </joint>
 
+  <sensor_d435_1 parent="top_plate_camera_mount_link">
+    <origin xyz="0.06289 0.05 0.01585" rpy="3.1415 1.5708 1.5708"/>
+  </sensor_d435_1>
+  -->
+
+ <link name="top_plate_camera_mount_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://husky_custom_description/meshes/Husky_Top_Plate_with_Cameras_Assembly.stl" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.127 0.1016 0.0508" rpy="0 0 0"/>
+      </geometry>
+    </collision>
+  </link>
+
+   <sensor_d435_1 parent="top_plate_camera_mount_link">
+    <origin xyz="0.117 0.339 0.453" rpy="-1.5708 2.2064 0"/>
+  </sensor_d435_1>
+
+  <sensor_d435_2 parent="top_plate_camera_mount_link">
+    <origin xyz="0.312 0.337 0.435" rpy="0 1.5708 1.5708"/>
+  </sensor_d435_2>
+  
+  <sensor_d435_3 parent="top_plate_camera_mount_link">
+    <origin xyz="0.508 0.338 0.454" rpy="-1.5708 0.8721 0"/>
+  </sensor_d435_3>
+  
+  <joint name="top_plate_camera_mount_joint" type="fixed">
+    <parent link="top_plate_front_link" />
+    <child link="top_plate_camera_mount_link" />
+    <origin xyz="0.412 0.3115 -0.39326" rpy="-1.5708 3.1415 1.5708" />
+  </joint>
+
+<!--
+  <joint name="right_camera_mount_joint" type="fixed">
+    <parent link="top_plate_front_link" />
+    <child link="front_camera_mount_link" />
+    <origin xyz="-0.033 -0.063075 -0.00675" rpy="-1.5708 0 1.5708" />
+  </joint>
+
+  <joint name="left_camera_mount_joint" type="fixed">
+    <parent link="top_plate_front_link" />
+    <child link="front_camera_mount_link" />
+    <origin xyz="-0.033 -0.063075 -0.00675" rpy="-1.5708 0 1.5708" />
+  </joint>
+
+  <sensor_d435_2 parent="left_side_camera_mount_link">
+    <origin xyz="0.06289 0.05 0.01585" rpy="3.1415 1.5708 1.5708"/>
+  </sensor_d435_2>
+
+  <sensor_d435_3 parent="right_side_camera_mount_link">
+    <origin xyz="0.06289 0.05 0.01585" rpy="3.1415 1.5708 1.5708"/>
+  </sensor_d435_3>
+
+  <joint name="front_D435_camera_joint" type="fixed">
+    <parent link="front_camera_mount_link" />
+    <child link="camera2_link" />
+    <origin xyz="0 0 0" rpy="0 3.1415 3.1415" />
+  </joint>
+ -->
 </robot>
