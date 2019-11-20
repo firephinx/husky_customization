@@ -34,6 +34,7 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
   <xacro:include filename="$(find realsense2_description)/urdf/2_d435.urdf.xacro" />
   <xacro:include filename="$(find realsense2_description)/urdf/3_d435.urdf.xacro" />
   <xacro:include filename="$(find realsense2_description)/urdf/4_d435.urdf.xacro" />
+
   <xacro:include filename="$(find husky_ur_description)/urdf/husky_ur5_e_description.urdf.xacro"/>
 
  <link name="top_plate_ur5_mount_link">
@@ -64,6 +65,33 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
     </collision>
   </link>
 
+  <link name="gx5_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.06 0.025 0.01" rpy="0 0 0"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="wgs84_odom_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.06 0.025 0.01" rpy="0 0 0"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="navsat_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.035 0.035 0.015" rpy="0 0 0"/>
+      </geometry>
+    </collision>
+  </link>
+
   <sensor_d435_1 parent="top_plate_camera_mount_link">
     <origin xyz="0.117 0.339 0.453" rpy="-1.5708 2.2064 0"/>
   </sensor_d435_1>
@@ -86,10 +114,29 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
     <origin xyz="0.412 0.3115 -0.39326" rpy="-1.5708 3.1415 1.5708" />
   </joint>
   
-   <joint name="top_plate_ur5_mount_joint" type="fixed">
+  <joint name="top_plate_ur5_mount_joint" type="fixed">
     <parent link="ur_arm_wrist_3_link" />
     <child link="top_plate_ur5_mount_link" />
     <origin xyz="0.165 0.215 0.122" rpy="0 1.5708 3.1415" />
   </joint>  
+
+  <joint name="microstrain_gx5_imu_joint" type="fixed">
+    <parent link="top_plate_link" />
+    <child link="gx5_link" />
+    <origin xyz="-0.09 0.0 -0.07" rpy="3.1415 0 3.1415" />
+    <!--origin xyz="0.0 0.0 0.0" rpy="0 0 0" /-->
+  </joint>  
+
+  <joint name="fused_gps_imu_joint" type="fixed">
+    <parent link="gx5_link" />
+    <child link="wgs84_odom_link" />
+    <origin xyz="0.0 0.0 0.0" rpy=" 0 0 0" />
+  </joint> 
+
+  <joint name="gps_joint" type="fixed">
+    <parent link="top_plate_rear_link" />
+    <child link="navsat_link" />
+    <origin xyz="0.0 0.0 0.27" rpy="0 0 0" />
+  </joint> 
 
 </robot>
